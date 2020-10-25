@@ -15,7 +15,17 @@ logger.addHandler(file_handler)
 logger.setLevel(DEBUG)
 logger.propagate = False
 
+st_time = datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')
+logger.debug(f"[info] start {st_time}")
+
 def main(tg_time,message,margin_minute = "5"):
+    """reminder main program
+
+    Args:
+        tg_time (str): alarm time ex)"5:20"
+        message (str): remind message
+        margin_minute (str, optional): margin time . Defaults to "5".
+    """
     wait_sec = cal_wait_sec(tg_time,margin_minute)
     if wait_sec > 0:
         logger.debug(f"[info] create reminder  message:{message},time:{tg_time},margin_minute{margin_minute}")
@@ -25,7 +35,6 @@ def main(tg_time,message,margin_minute = "5"):
     else:
         logger.debug(f"[error] wait sec < 0 f{wait_sec}")
         sys.exit()
-
 
 def popup(message):
     root = tkinter.Tk()
@@ -46,11 +55,9 @@ def cal_wait_sec(tg_time,margin_minute = "5"):
 if __name__ == "__main__":
 
     try:
-        st_time = logger.debug(datetime.datetime.now()).strftime('%Y/%m/%d %H:%M:%S')
-        logger.debug(f"[info] start {st_time}")
+
 
         param = sys.argv
-        logger.debug("[info] input: " + param[0])
 
         if len(param) < 3:
             logger.debug("[erroe] you must input message(str) and time(**:**)")
@@ -67,6 +74,7 @@ if __name__ == "__main__":
 
 
         main(tg_time,message,margin_minute)
-    except ValueError as err:
-        logger.debug("error")
-        logger.exception('Raise Exception: %s', err)
+    except:
+        logger.debug("error!")
+        logger.info("bar", stack_info=True)
+        logger.info("hmm", exc_info=True)
